@@ -80,10 +80,17 @@ def createButton():
     read_database()
 
 def deleteButton(text):
-    create_database()
+    index = text[0]
     conn = create_connection(database_path)
     db = conn.cursor()
-    db.execute('SELECT * FROM sounds ORDER BY name')
+    i = 0
+    for row in db.execute('SELECT * FROM sounds ORDER BY name'):
+        if i == index:
+            sound_name = row[0]
+        i = i+1
+    db.execute(f"DELETE from sounds WHERE name = '{sound_name}'")
+    conn.commit()
+    conn.close()
 
 def list_buttons():
     master = Tk()
@@ -101,16 +108,30 @@ def list_buttons():
 
     mainloop()
 
+#PLEASE FIX THIS IT DOESNT WORK RIGHT NOW
+#MAKES AN EXTRA WOO CAUSE ROWS SHIFT AND EVERYTHING COVERS ITSELF
+def refreshButton():
+    i = 0
+    conn = create_connection(database_path)
+    db = conn.cursor()
+    for row in db.execute('SELECT * FROM sounds ORDER BY name'):
+        initialize_buttons(row)
+        i = i+1
+    conn.commit()
+    conn.close()
+
 #Creates button widget
 add = Button(root, text="Add", bg="green", fg="white", font="Impact", height=5, width=25, command=createButton)
 clear = Button(root, text="Clear", bg="red", fg="white", font="Impact", height=5, width=25, command=clear_database)
 remove = Button(root, text="Remove", bg="orange", height=5, fg="white", font="Impact", width=25, command=list_buttons)
+refresh = Button(root, text="Refresh", bg="blue", fg="white", font="Impact", height=5, width=25, command=refreshButton)
 
 
 #Inserts button widget
 add.grid(row=0, column=0)
 clear.grid(row=1, column=0)
 remove.grid(row=2, column=0)
+refresh.grid(row=3, column=0)
 #Creates database and initial buttons
 create_database()
 conn = create_connection(database_path)
