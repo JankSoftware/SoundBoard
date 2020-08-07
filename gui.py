@@ -16,6 +16,8 @@ from playsound import *
 database_path = "c:\\users\\the goof troop\\desktop\\sound effects\\sounds.db"
 
 root = Tk()
+
+#Iterator to help with button row stuff
 i = 0
 
 def create_connection(path):
@@ -91,9 +93,9 @@ def deleteButton():
     mainloop()
 
 #Creates button widget
-add = Button(root, text="Add", padx=50, pady=50, command=createButton)
-delete = Button(root, text="Clear", padx=50, pady=50, command=clear_database)
-remove = Button(root, text="Remove", padx=50, pady=50, command=deleteButton)
+add = Button(root, text="Add", height=3, width=15, command=createButton)
+delete = Button(root, text="Clear", height=3, width=15, command=clear_database)
+remove = Button(root, text="Remove", height=3, width=15, command=deleteButton)
 
 
 #Inserts button widget
