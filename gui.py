@@ -116,7 +116,6 @@ def refreshButton():
     i = 0
     for widget in frame.winfo_children():
         widget.destroy()
-    #homeButtons()
     conn = create_connection(database_path)
     db = conn.cursor()
     for row in db.execute('SELECT * FROM sounds ORDER BY name'):
@@ -124,6 +123,15 @@ def refreshButton():
         i = i+1
     conn.commit()
     conn.close()
+    #homeButtons()
+    add = Button(frame, text="Add", bg="green", fg="white", font="Impact", height=5, width=25, command=createButton)
+    clear = Button(frame, text="Clear", bg="red", fg="white", font="Impact", height=5, width=25, command=clear_database)
+    remove = Button(frame, text="Remove", bg="orange", height=5, fg="white", font="Impact", width=25, command=list_buttons)
+    refresh = Button(frame, text="Refresh", bg="blue", fg="white", font="Impact", height=5, width=25, command=refreshButton)
+    add.grid(row=0, column=0)
+    clear.grid(row=1, column=0)
+    remove.grid(row=2, column=0)
+    refresh.grid(row=3, column=0)
 #Creates button widget
 add = Button(frame, text="Add", bg="green", fg="white", font="Impact", height=5, width=25, command=createButton)
 clear = Button(frame, text="Clear", bg="red", fg="white", font="Impact", height=5, width=25, command=clear_database)
