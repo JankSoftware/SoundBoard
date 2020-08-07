@@ -67,14 +67,14 @@ def buttonClick(name):
 
 def initialize_buttons(row):
     name = row[0]
-    newButton = Button(root, text=name, height=3, width=15, command = lambda: buttonClick(name))
+    newButton = Button(root, text=name, bg="black", fg="white", font="Impact", height=5, width=25, command = lambda: buttonClick(name))
     newButton.grid(row=i, column=1)
 
 def createButton():
     answer = tkinter.simpledialog.askstring("New button", "Enter a name: ")
     currdir = os.getcwd()
     file = tkinter.filedialog.askopenfilename(parent=root, initialdir=currdir, title='Please select a directory')
-    newButton = Button(root, text=answer, height=3, width=15, command = lambda: buttonClick(answer))
+    newButton = Button(root, text=answer, bg="black", fg="white", font="Impact", height=5, width=25, command = lambda: buttonClick(answer))
     newButton.grid()
     add_to_database(answer, file)
     read_database()
@@ -93,9 +93,9 @@ def deleteButton():
     mainloop()
 
 #Creates button widget
-add = Button(root, text="Add", bg="green", height=3, width=15, command=createButton)
-delete = Button(root, text="Clear", bg="red", height=3, width=15, command=clear_database)
-remove = Button(root, text="Remove", height=3, width=15, command=deleteButton)
+add = Button(root, text="Add", bg="green", fg="white", font="Impact", height=5, width=25, command=createButton)
+delete = Button(root, text="Clear", bg="red", fg="white", font="Impact", height=5, width=25, command=clear_database)
+remove = Button(root, text="Remove", bg="orange", height=5, fg="white", font="Impact", width=25, command=deleteButton)
 
 
 #Inserts button widget
