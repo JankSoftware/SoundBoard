@@ -79,7 +79,13 @@ def createButton():
     add_to_database(answer, file)
     read_database()
 
-def deleteButton():
+def deleteButton(text):
+    create_database()
+    conn = create_connection(database_path)
+    db = conn.cursor()
+    db.execute('SELECT * FROM sounds ORDER BY name')
+
+def list_buttons():
     master = Tk()
 
     listbox = Listbox(master)
@@ -90,17 +96,20 @@ def deleteButton():
     for row in db.execute('SELECT * FROM sounds ORDER BY name'):
         listbox.insert(END, row[0])
 
+    remove = Button(master, text="Remove", command=lambda: deleteButton(listbox.curselection()))
+    remove.grid()
+
     mainloop()
 
 #Creates button widget
 add = Button(root, text="Add", bg="green", fg="white", font="Impact", height=5, width=25, command=createButton)
-delete = Button(root, text="Clear", bg="red", fg="white", font="Impact", height=5, width=25, command=clear_database)
-remove = Button(root, text="Remove", bg="orange", height=5, fg="white", font="Impact", width=25, command=deleteButton)
+clear = Button(root, text="Clear", bg="red", fg="white", font="Impact", height=5, width=25, command=clear_database)
+remove = Button(root, text="Remove", bg="orange", height=5, fg="white", font="Impact", width=25, command=list_buttons)
 
 
 #Inserts button widget
 add.grid(row=0, column=0)
-delete.grid(row=1, column=0)
+clear.grid(row=1, column=0)
 remove.grid(row=2, column=0)
 #Creates database and initial buttons
 create_database()
