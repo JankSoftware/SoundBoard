@@ -79,7 +79,7 @@ def createButton():
     newButton = Button(frame, text=answer, bg="black", fg="white", font="Impact", height=5, width=25, command = lambda: buttonClick(answer))
     newButton.grid()
     add_to_database(answer, file)
-    read_database()
+    refreshButton()
 
 def deleteButton(text):
     index = text[0]
@@ -93,6 +93,7 @@ def deleteButton(text):
     db.execute(f"DELETE from sounds WHERE name = '{sound_name}'")
     conn.commit()
     conn.close()
+    refreshButton()
 
 def list_buttons():
     master = Tk()
@@ -125,26 +126,25 @@ def refreshButton():
     conn.close()
     #homeButtons()
     add = Button(frame, text="Add", bg="green", fg="white", font="Impact", height=5, width=25, command=createButton)
-    clear = Button(frame, text="Clear", bg="red", fg="white", font="Impact", height=5, width=25, command=clear_database)
-    remove = Button(frame, text="Remove", bg="orange", height=5, fg="white", font="Impact", width=25, command=list_buttons)
+    clear = Button(frame, text="Clear", bg="orange", fg="white", font="Impact", height=5, width=25, command=clear_database)
+    remove = Button(frame, text="Remove", bg="red", height=5, fg="white", font="Impact", width=25, command=list_buttons)
     refresh = Button(frame, text="Refresh", bg="blue", fg="white", font="Impact", height=5, width=25, command=refreshButton)
     add.grid(row=0, column=0)
-    clear.grid(row=1, column=0)
-    remove.grid(row=2, column=0)
-    refresh.grid(row=3, column=0)
+    remove.grid(row=1, column=0)
+    refresh.grid(row=2, column=0)
 #Creates button widget
 add = Button(frame, text="Add", bg="green", fg="white", font="Impact", height=5, width=25, command=createButton)
-clear = Button(frame, text="Clear", bg="red", fg="white", font="Impact", height=5, width=25, command=clear_database)
-remove = Button(frame, text="Remove", bg="orange", height=5, fg="white", font="Impact", width=25, command=list_buttons)
+clear = Button(frame, text="Clear", bg="orange", fg="white", font="Impact", height=5, width=25, command=clear_database)
+remove = Button(frame, text="Remove", bg="red", height=5, fg="white", font="Impact", width=25, command=list_buttons)
 refresh = Button(frame, text="Refresh", bg="blue", fg="white", font="Impact", height=5, width=25, command=refreshButton)
 
 
 #Inserts button widget
 def homeButtons():
+    #Add clear.grid(row=3, column=0 if you want the ability to delete the whole thing)
     add.grid(row=0, column=0)
-    clear.grid(row=1, column=0)
-    remove.grid(row=2, column=0)
-    refresh.grid(row=3, column=0)
+    remove.grid(row=1, column=0)
+    refresh.grid(row=2, column=0)
 
 #Creates database and initial buttons
 create_database()
