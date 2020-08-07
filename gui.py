@@ -16,6 +16,7 @@ from playsound import *
 database_path = "c:\\users\\the goof troop\\desktop\\sound effects\\sounds.db"
 
 root = Tk()
+i = 0
 
 def create_connection(path):
     connection = None
@@ -65,31 +66,47 @@ def buttonClick(name):
 def initialize_buttons(row):
     name = row[0]
     newButton = Button(root, text=name, padx=50, pady=50, command = lambda: buttonClick(name))
-    newButton.pack()
+    newButton.grid(row=i, column=1)
 
 def createButton():
     answer = tkinter.simpledialog.askstring("New button", "Enter a name: ")
     currdir = os.getcwd()
     file = tkinter.filedialog.askopenfilename(parent=root, initialdir=currdir, title='Please select a directory')
     newButton = Button(root, text=answer, padx=50, pady=50, command = lambda: buttonClick(answer))
-    newButton.pack()
+    newButton.grid()
     add_to_database(answer, file)
     read_database()
 
+def deleteButton():
+    master = Tk()
+
+    listbox = Listbox(master)
+    listbox.grid()
+
+    conn = create_connection(database_path)
+    db = conn.cursor()
+    for row in db.execute('SELECT * FROM sounds ORDER BY name'):
+        listbox.insert(END, row[0])
+
+    mainloop()
+
 #Creates button widget
 add = Button(root, text="Add", padx=50, pady=50, command=createButton)
-delete = Button(root, text="Delete", padx=50, pady=50, command=clear_database)
+delete = Button(root, text="Clear", padx=50, pady=50, command=clear_database)
+remove = Button(root, text="Remove", padx=50, pady=50, command=deleteButton)
 
 
 #Inserts button widget
-add.pack()
-delete.pack()
+add.grid(row=0, column=0)
+delete.grid(row=1, column=0)
+remove.grid(row=2, column=0)
 #Creates database and initial buttons
 create_database()
 conn = create_connection(database_path)
 db = conn.cursor()
 for row in db.execute('SELECT * FROM sounds ORDER BY name'):
     initialize_buttons(row)
+    i = i+1
 
 #Main loop
 root.mainloop()
