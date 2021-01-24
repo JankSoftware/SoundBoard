@@ -1,19 +1,15 @@
-#For the GUI
 from tkinter import *
 import tkinter.simpledialog
-
-#For opening a file
 import tkinter.filedialog
 import os
+from config import SoundboardConfig
+from playsound import *
 
 #For the database
 import sqlite3
 from sqlite3 import Error
 
-#Gets playsound files
-from playsound import *
-
-database_path = "c:\\users\\the goof troop\\desktop\\sound effects\\sounds.db"
+database_path = SoundboardConfig.database_path
 
 #Creates window. Frame helps for refresh.
 root = Tk()
