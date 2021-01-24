@@ -6,6 +6,7 @@ class SoundController(object):
         self._sounds = []
 
     def LoadSounds(self, sounds_to_load):
+        self._sounds.clear()
         for s in sounds_to_load:
             self._sounds.append(Sound(s[0], s[1], s[2]))
         print("Sounds loaded")

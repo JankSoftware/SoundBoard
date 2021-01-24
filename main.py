@@ -12,7 +12,7 @@ sc = SoundController()
 sc.LoadSounds(db.SelectAll())
 
 def main():
-    gui = GUI(sc)
+    gui = GUI(sc, db)
     gui.Run()
 
 if __name__ == "__main__":
