@@ -10,7 +10,8 @@ class GUI(object):
     #Creates window. Frame helps for refresh.
     root = Tk()
     root.title('Soundboard')
-    root.iconbitmap = None
+    root.attributes('-toolwindow', True)
+    root.resizable(False, False) 
     frame = Frame(root)
     
     # Button constants
