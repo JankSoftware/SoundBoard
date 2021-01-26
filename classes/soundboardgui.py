@@ -25,13 +25,29 @@ class GUI(object):
         self.db = dbController
         self.sc = soundController
         self.frame.grid()
-        self.__LoadControlButtons()
         self.__AddButtonsFromSounds()
+        self.__CreateMenuBar()
 
     def __LoadControlButtons(self):
         self.buttons[-2] =  Button(self.frame, text="Add", bg="green", fg="white", font="Impact", height=self.button_height, width=self.button_width, command= lambda: self.__createButton()).grid(row=0, column=0)
         self.buttons[-1] =  Button(self.frame, text="Remove", bg="red", fg="white", font="Impact", height=self.button_height, width=self.button_width, command=  lambda: self.__deleteButton()).grid(row=1, column=0)
         self.buttons[0] = Button(self.frame, text="Refresh", bg="blue", fg="white", font="Impact", height=self.button_height, width=self.button_width).grid(row=2, column=0)
+
+    def __CreateMenuBar(self):
+        menubar = Menu(self.root)
+        filemenu = Menu(menubar, tearoff=0)
+        filemenu.add_command(label="New", command= lambda: self.__createButton())
+        filemenu.add_command(label="Remove",  command=  lambda: self.__deleteButton())
+        filemenu.add_separator()
+        filemenu.add_command(label="Exit", command=self.root.quit)
+        menubar.add_cascade(label="File", menu=filemenu)
+
+        helpmenu = Menu(menubar, tearoff=0)
+        helpmenu.add_command(label="About...")
+        menubar.add_cascade(label="Help", menu=helpmenu)
+
+        self.root.config(menu=menubar)
+        self.root.mainloop()
 
     def __initialize_button(self, column, row, sound):
         self.buttons[sound.id] = Button(
@@ -50,15 +66,14 @@ class GUI(object):
         self.sc.PlaySoundById(id)
 
     def __AddButtonsFromSounds(self):
-        # starting column is 1 since controls are on 0
-        col = 1
+        col = 0
         row = 0
         for s in self.sc.GetSounds():
             self.__initialize_button(col, row, s)
             if row >= self.max_row - 1:
                 row = 0
                 col += 1
-                if col >= self.max_column + 1:
+                if col >= self.max_column - 1:
                     break
             else:
                 row +=1
