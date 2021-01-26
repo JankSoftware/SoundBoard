@@ -27,24 +27,20 @@ class GUI(object):
         self.frame.grid()
         self.__AddButtonsFromSounds()
         self.__CreateMenuBar()
-
-    def __LoadControlButtons(self):
-        self.buttons[-2] =  Button(self.frame, text="Add", bg="green", fg="white", font="Impact", height=self.button_height, width=self.button_width, command= lambda: self.__createButton()).grid(row=0, column=0)
-        self.buttons[-1] =  Button(self.frame, text="Remove", bg="red", fg="white", font="Impact", height=self.button_height, width=self.button_width, command=  lambda: self.__deleteButton()).grid(row=1, column=0)
-        self.buttons[0] = Button(self.frame, text="Refresh", bg="blue", fg="white", font="Impact", height=self.button_height, width=self.button_width).grid(row=2, column=0)
-
+   
     def __CreateMenuBar(self):
         menubar = Menu(self.root)
         filemenu = Menu(menubar, tearoff=0)
         filemenu.add_command(label="New", command= lambda: self.__createButton())
         filemenu.add_command(label="Remove",  command=  lambda: self.__deleteButton())
         filemenu.add_separator()
-        filemenu.add_command(label="Exit", command=self.root.quit)
+        filemenu.add_command(label="Exit", command=self.root.destroy)
         menubar.add_cascade(label="File", menu=filemenu)
 
-        helpmenu = Menu(menubar, tearoff=0)
-        helpmenu.add_command(label="About...")
-        menubar.add_cascade(label="Help", menu=helpmenu)
+        # TODO: Add about menu
+        # helpmenu = Menu(menubar, tearoff=0)
+        # helpmenu.add_command(label="About...")
+        # menubar.add_cascade(label="Help", menu=helpmenu)
 
         self.root.config(menu=menubar)
         self.root.mainloop()
@@ -62,6 +58,13 @@ class GUI(object):
                 row=row, 
                 column=column)
 
+    def __RefreshButtons(self):
+        self.frame.destroy()
+        self.frame = Frame(self.root)
+        self.frame.grid()
+        self.sc.LoadSounds(self.db.SelectAll())
+        self.__AddButtonsFromSounds()
+
     def __buttonClick(self, id):
         self.sc.PlaySoundById(id)
 
@@ -73,7 +76,7 @@ class GUI(object):
             if row >= self.max_row - 1:
                 row = 0
                 col += 1
-                if col >= self.max_column - 1:
+                if col > self.max_column - 1:
                     break
             else:
                 row +=1
@@ -90,12 +93,14 @@ class GUI(object):
             listbox.insert(END, f"{s.id} - {s.name}")
 
         remove = Button(master, text="Remove", command=lambda: self.__removeSound(local_list[listbox.get(listbox.curselection())], master))
-        remove.grid()
+        remove.grid()        
         mainloop()
+
         
     def __removeSound(self, id, master):
         self.db.Delete(id)
         master.destroy()
+        self.__RefreshButtons()
 
     def __createButton(self):
         new_sound_name = tkinter.simpledialog.askstring("New Button", "Enter a name: ")
@@ -105,8 +110,7 @@ class GUI(object):
             self.db.Insert(new_sound_name, file)
             for widget in self.frame.winfo_children():
                 widget.destroy()
-            self.__LoadControlButtons()
-            self.__AddButtonsFromSounds()
+            self.__RefreshButtons()
 
     def Run(self):
         self.root.mainloop()
